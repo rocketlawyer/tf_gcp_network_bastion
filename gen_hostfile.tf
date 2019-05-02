@@ -33,7 +33,7 @@ resource "null_resource" "dnode_host_file" {
 
 
 resource "null_resource" "combine_hostfile" {
-  depends_on = ["null_resource.dnode_host_file", "null_resource.admin_host_file"]
+  depends_on = ["null_resource.dnode_host_file", "null_resource.admin_host_file",]
   provisioner "local-exec" {
     command =  "cat /tmp/ahostfile.txt /tmp/dhostfile.txt > /tmp/hostfile.txt && rm /tmp/ahostfile.txt /tmp/dhostfile.txt"
   }
