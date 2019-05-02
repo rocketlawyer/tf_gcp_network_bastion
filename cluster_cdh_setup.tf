@@ -2,7 +2,7 @@
 
 resource "null_resource" "cdh_cluster_setup" {
 
-  depends_on = ["google_compute_instance.cdh_master", "google_compute_instance.cdh_dnode", "null_resource.cdh_adminnode_fuse_java_agent_install",]
+  depends_on = ["google_compute_instance.cdh_master", "google_compute_instance.cdh_dnode", "null_resource.cdh_adminnode_fuse_java_agent_install", "null_resource.cdh_dnode_fuserepo_java_install",]
 
   connection {
         agent = true
