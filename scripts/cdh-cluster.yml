@@ -1,0 +1,56 @@
+---
+- hosts: cdh
+  remote_user: root
+  vars:
+    src_path: "."
+    cm_host: "node0.x.y"
+    cm_ver:  "5.13.3"
+
+  tasks:
+    - name: upgrade all packages
+      apt: name=* state=latest
+
+    - name: ntp & ntpdate apt install
+      apt: name="{{ item }}" state=latest
+      with_items:
+        - ntp
+        - ntpdate
+
+    - name: copy hosts file
+      copy: src="{{ src_path }}/cdh_hosts" dest=/etc/hosts owner=root group=root mode=644
+
+    - name: set hostname
+      hostname: name={{ inventory_hostname }}
+
+    - name: set vm.swappiness
+      command: echo "vm.swappiness=0" >> /etc/sysctl.conf; sysctl -p
+
+    - name: stop firewalld
+      service: name=firewalld enabled=false state=stopped
+
+    - name: disable seLinux
+      selinux: state=disabled
+
+    - name: reboot
+      shell: reboot
+      async: 0
+      poll: 0
+      ignore_errors: yes
+
+    - name: cloudera manager download
+      command: cd /var/tmp; curl -O http://archive.cloudera.com/cm5/installer/{{ cm_ver }}/cloudera-manager-installer.bin; chmod 755 cloudera-manager-installer.bin
+
+    - name: cloudera manager install
+      command: /var/tmp/cloudera-manager-installer.bin --i-agree-to-all-licenses --noprompt --noreadme
+
+    - name: copy cm_rest.sh
+      copy: src="{{ src_path }}/cm_rest.sh" dest=/var/tmp/cm_rest.sh owner=root group=root mode=755
+
+    - name: exec cm_resh.sh
+      command: bash /var/tmp/cm_rest.sh
+
+    - name: copy cluster config
+      copy: src="{{ src_path }}/myCluster1-template.json" dest=/var/tmp/myCluster1-template.json owner=root group=root mode=644
+
+    - name: put cluster config to Cloudera Manager
+      command: curl -X POST -H "Content-Type{{ ':' }} application/json" -d @myCluster1-template.json "http://admin:admin@{{ cm_host }}:7180/api/v12/cm/importClusterTemplate"

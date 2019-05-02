@@ -1,0 +1,5 @@
+# set DNS or /etc/hosts on your computer
+[cdh]
+node0.x.y
+node1.x.y
+node2.x.y

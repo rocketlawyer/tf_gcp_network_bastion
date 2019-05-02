@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  become: yes
+  gather_facts: no
+
+- name: Install Postgres
+  apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  sudo: yes
+  with_items:
+  - postgresql
+  - postgresql-contrib
+  - libpq-dev
+  - python-psycopg2
+    tags: packages
+
+  vars:
+    password: PaSSW0rd2018
+
+  tasks:
+  - name: Create SCM database
+    sudo_user: postgres
+    postgresql_db: name=scm encoding='UTF-8' lc_collate='en_US.UTF-8' lc_ctype='en_US.UTF-8' state=present
+
+  - name: Create scm role for database
+    sudo_user: postgres
+    postgresql_user: db=scm user=scm password="{{password}}" priv=ALL state=present
+
+  - name: Start the Postgresql service
+    sudo: yes
+    service:
+      name: postgresql
+      state: started
+      enabled: true
+
+  - name: Importing scm data
+    sudo_user: postgres
+    shell: psql scm < /home/scm.dump.sql
+
+  - name: Grant usage of schema to scm role
+    sudo_user: postgres
+    postgresql_privs: database=scm state=present privs=USAGE type=schema roles=scm objs=dictionary
+
+  - name: Grant table permissions for scm role
+    sudo_user: postgres
+    postgresql_privs: database=scm schema=dictionary state=present privs=SELECT,INSERT,UPDATE type=table roles=scm grant_option=no objs=ALL_IN_SCHEMA
+
+  - name: Grant sequence permissions for scm role
+    sudo_user: postgres
+    postgresql_privs: database=scm schema=dictionary state=present privs=USAGE type=sequence roles=scm grant_option=no objs=ALL_IN_SCHEMA
