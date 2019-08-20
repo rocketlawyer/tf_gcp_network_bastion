@@ -19,13 +19,16 @@ resource "null_resource" "cdh_cluster_setup" {
 
   provisioner "remote-exec" {
     inline = [
-    "sudo apt-add-repository ppa:ansible/ansible -y && sudo apt update",
-    "sudo apt install git gcc ansible python-pip -y",
+    "sudo yum install epel-release -y",
+    "sudo yum install ansible-2.4.2.0-2.el7 python-pip -y",
+    "sudo yum install git gcc -y",
     "sudo pip install cm-api",
     "sudo pip install --upgrade pip",
     "sudo echo -e 'StrictHostKeyChecking no\n' >> ~/.ssh/config; sudo chmod 600 ~/.ssh/config",
-    "git clone https://github.com/alcher/ansible-cloudera-hadoop.git terraform-hadoop",
-    "sleep 10 && cd terraform-hadoop && ansible-playbook -i hosts site.yml"
+#     "git clone https://github.com/alcher/cloudera-centos terraform-hadoop"
+##    "git clone https://github.com/poorrabbit/cdh_centos_ansible terraform-hadoop",
+##    "git clone https://github.com/alcher/ansible-cloudera-hadoop.git terraform-hadoop",
+#    "sleep 10 && cd terraform-hadoop && ansible-playbook -i hosts site.yml"
     ]
   }
 

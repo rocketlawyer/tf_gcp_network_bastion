@@ -24,7 +24,7 @@ if [ "${DEVICES}" ]; then
         then
           umount ${MOUNTPOINT}
         fi
-        mkfs -t $HDFS_FILESYSTEM ${DEVICEPATH}
+        mke2fs -F -t $HDFS_FILESYSTEM ${DEVICEPATH}
         MOUNTDIR="${MOUNT_BASEDIR}/data${COUNT}"
         if [ ! -d $MOUNTDIR ]; then
           mkdir -p $MOUNTDIR

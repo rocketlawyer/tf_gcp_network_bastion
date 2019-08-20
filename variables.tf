@@ -89,8 +89,8 @@ variable "gce_machine_type" {
   type = "map"
   default = {
     "bastion"              = "n1-standard-1" #use n1-standard-2
-    "cdh_master"           = "n1-standard-1"
-    "cdh_dnode"            = "n1-standard-1"
+    "cdh_master"           = "n1-highmem-2"  #use n1-standard-2
+    "cdh_dnode"            = "n1-standard-2"
   }
 }
 
@@ -98,9 +98,9 @@ variable "gce_machine_type" {
 variable "gce_image_name" {
   type = "map"
   default = {
-    "bastion"              = "ubuntu-os-cloud/ubuntu-1604-lts"
-    "cdh_master"           = "ubuntu-os-cloud/ubuntu-1604-lts"
-    "cdh_dnode"           = "ubuntu-os-cloud/ubuntu-1604-lts"
+    "bastion"              = "centos-cloud/centos-7"
+    "cdh_master"           = "centos-cloud/centos-7"
+    "cdh_dnode"           = "centos-cloud/centos-7"
   }
 }
 
@@ -143,8 +143,8 @@ variable "admin_privkey_file"             {}
 variable "instance_count" {
   type = "map"
   default = {
-    "cdh_master"                = 2
-    "cdh_dnode"			= 2
+    "cdh_master"                = 4
+    "cdh_dnode"			= 4
   }
 }
 

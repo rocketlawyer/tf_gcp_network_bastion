@@ -22,7 +22,7 @@ resource "null_resource" "cdh_admin_node_mount" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir /mnt/fuse_stor",
-      "sudo gcsfuse rlcdh101-storage /mnt/fuse_stor",
+      "sudo gcsfuse -o allow_other ${var.unique}-storage /mnt/fuse_stor",
     ]
   }
   count = "${var.instance_count["cdh_master"]}"

@@ -10,7 +10,6 @@ resource "google_compute_disk" "datadisk" {
     //prevent_destroy = true
     prevent_destroy = false
   }
-
 }
 
 # Mounting the data disk for datanodes
