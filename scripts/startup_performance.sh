@@ -13,18 +13,3 @@ sudo bash -c "echo 'echo never > /sys/kernel/mm/transparent_hugepage/defrag' >> 
 sudo bash -c "echo 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.d/rc.local"  # Persists after reboot
 sudo chmod +x /etc/rc.d/rc.local  # Activate script
 
-#sudo tee /etc/systemd/system/disable-thp.service > /dev/null <<EOF
-#[Unit]
-#Description=Disable Transparent Huge Pages (THP)
-#
-#[Service]
-#Type=simple
-#ExecStart=/bin/sh -c "echo 'never' > /sys/kernel/mm/transparent_hugepage/enabled && echo 'never' > /sys/kernel/mm/transparent_hugepage/defrag"
-#
-#[Install]
-#WantedBy=multi-user.target
-#EOF
-#
-#sudo systemctl daemon-reload
-#sudo systemctl start disable-thp
-#sudo systemctl enable disable-thp
