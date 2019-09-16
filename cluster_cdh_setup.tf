@@ -26,8 +26,6 @@ resource "null_resource" "cdh_cluster_setup" {
     "sudo pip install --upgrade pip",
     "sudo echo -e 'StrictHostKeyChecking no\n' >> ~/.ssh/config; sudo chmod 600 ~/.ssh/config",
 #     "git clone https://github.com/alcher/cloudera-centos terraform-hadoop"
-##    "git clone https://github.com/poorrabbit/cdh_centos_ansible terraform-hadoop",
-##    "git clone https://github.com/alcher/ansible-cloudera-hadoop.git terraform-hadoop",
 #    "sleep 10 && cd terraform-hadoop && ansible-playbook -i hosts site.yml"
     ]
   }
