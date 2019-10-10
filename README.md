@@ -33,7 +33,12 @@ gcloud config set account [you@pythian.com]
 cd ~/gcp/projects/projX
 gcloud iam service-accounts create terraform
 gcloud iam service-accounts keys create gce-terraform-key.json --iam-account=terraform@<your-project-id>.iam.gserviceaccount.com  
+gcloud projects add-iam-policy-binding <your-project-id> \
+  --member serviceAccount:terraform@<your-project-id>.iam.gserviceaccount.com \
+  --role roles/editor
 ```
+
+OR grant via gcp console
 
 After service account is created, login to the GCP console, go to "API & Services", and Credentials. Next, click the Create credentials drop-down list, select Service account key. From the "Create service account key" page, select "terraform" from the Service account list, select JSON as the key type and click Create. This will create and download an API key that will be used by the terraform application to create and access GCP resources. Configure the gcloud command-line tool with the downloaded credentials.
 
@@ -50,12 +55,12 @@ Execute the following script to generate a unique Google Cloud Storage bucket na
 ```bash
 ~$ ./scripts/tf_autogen_remote_state_gcs_bucket_name.sh
 # Example output:
-# gs://c8389062275c750ca427fcddcb1bb83b608572c5386204e85101-terraform
+# gs://gcs-bucket_location
 ```
 
 Copy the generated bucket URL and use the gsutil tool to create the GCS bucket:
 ```bash
-~$ gsutil mb gs://c8389062275c750ca427fcddcb1bb83b608572c5386204e85101-terraform
+~$ gsutil mb gs://gcs-bucket-location
 ```
 
 Next, copy the bucket name (portion after gs://) and set it as the bucket value in the 'remotestate_${UNIQUE}.tf' file:
