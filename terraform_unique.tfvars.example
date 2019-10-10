@@ -1,0 +1,8 @@
+admin_pubkey_file 		= "change me to key.pub"
+admin_privkey_file 		= "change me to .key"
+cidr_workstation 		= "0.0.0.0/0"
+customer_gcp_credentials_file	= "change me to .json"
+customer_gcp_project_id		= "rl-us-cloudera-dr"
+unique				= "rlcdh101"
+storage_class			= "MULTI_REGIONAL"
+CDH_CLUSTER_NAME		= "rltest"
