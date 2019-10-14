@@ -25,7 +25,7 @@ rm /tmp/terraform.zip
 https://www.terraform.io/docs/providers/google/index.html
 
 First you need to allow terraform access GCP resources. This can be achieved by Service Accounts with corresponding access keys.
-Within the GCP console tool, gcloud, it can be achieved by issuing the following commands (Note: The terraform service account might already be setup if this is not the initial deployment):
+Within the GCP console tool, gcloud, it can be achieved by issuing the following commands (Note: The terraform service account require owner role to be able to mount the gcp storage, also might already be setup if this is not the initial deployment):
 
 ```bash
 gcloud config set project [PROJECT_ID]
@@ -35,7 +35,7 @@ gcloud iam service-accounts create terraform
 gcloud iam service-accounts keys create gce-terraform-key.json --iam-account=terraform@<your-project-id>.iam.gserviceaccount.com  
 gcloud projects add-iam-policy-binding <your-project-id> \
   --member serviceAccount:terraform@<your-project-id>.iam.gserviceaccount.com \
-  --role roles/editor
+  --role roles/owner
 ```
 
 OR grant via gcp console

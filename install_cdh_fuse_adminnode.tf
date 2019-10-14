@@ -28,26 +28,23 @@ resource "null_resource" "cdh_adminnode_fuse_java_agent_install" {
    }
 
   provisioner "file" {
-    source      = "scripts/install_packages.sh"
-    destination = "/tmp/install_packages.sh"
+    source      = "scripts/gcsfuse.repo"
+    destination = "/tmp/gcsfuse.repo"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/install_packages.sh",
-      "/tmp/install_packages.sh",
-    ]
-  }
-
-  provisioner "file" {
-    source      = "scripts/cm-agent.sh"
-    destination = "/tmp/cm-agent.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/cm-agent.sh",
-      "/tmp/cm-agent.sh ${google_compute_instance.cdh_master.0.network_interface.0.network_ip}",
+      "while [ -f /var/run/yum.pid ]; do sleep 3; done",
+      "sudo yum clean all -y",
+      "sudo cp /tmp/gcsfuse.repo /etc/yum.repos.d/gcsfuse.repo",
+      "echo y | sudo rpm --import https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+      "echo y | sudo rpm --import https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg",
+      "sudo setenforce 0 || /bin/true",
+      "sudo systemctl disable firewalld",
+      "sudo systemctl stop firewalld",
+      "sudo yum check-update -y",
+      "sudo yum -y install gcsfuse google-cloud-sdk",
+      "sudo yum -y install python",
     ]
   }
   count = "${var.instance_count["cdh_master"]}"
