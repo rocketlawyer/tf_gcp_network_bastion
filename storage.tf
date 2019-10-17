@@ -8,7 +8,7 @@ resource "google_storage_bucket" "RLCDH" {
   count         = "${local.name != "" ? 1 : 0}"
   project       = "${var.customer_gcp_project_id}"
   storage_class = "${var.storage_class}"
-  location 	= "${var.customer_gcp_region}"
+  location 	= "${var.customer_gcp_storage_region}"
   //force_destroy = true
   
   lifecycle { 
