@@ -2,6 +2,7 @@
 variable "customer_gcp_credentials_file" {}
 variable "customer_gcp_project_id"       {}
 variable "customer_gcp_region"           { default = "us-west1" }
+variable "customer_gcp_storage_region"   { default = "us"}
 
 # GCP services to enable for the project
 #
