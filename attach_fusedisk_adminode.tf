@@ -21,7 +21,7 @@ resource "null_resource" "cdh_admin_node_mount" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir /mnt/fuse_stor",
+      "sudo mkdir -p /mnt/fuse_stor",
       "sudo gcsfuse -o allow_other ${var.unique}-storage /mnt/fuse_stor",
     ]
   }
