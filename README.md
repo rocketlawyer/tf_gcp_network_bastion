@@ -112,9 +112,11 @@ Terraform automatically pushes state to this location after update, and will pul
 ...
 ```
 
-#### Auto install of CDH package and cluster build is currently disable. To trigger the install. Make sure the terraform run completed without error.
+#### Auto install of CDH package and cluster build is currently ENABLE. Incase you need to manually trigger the install. Follow the command below nad make sure the terraform run completed without error.
 ```
-1. ssh to bastion server
+1. eval "$(ssh-agent -s)"
+3. ssh-add <ssh key location>
+2. ssh -A to bastion server
 2. git clone https://github.com/alcher/cloudera-centos terraform-hadoop
 3. cd terraform-hadoop && ansible-playbook -i hosts site.yml
 
