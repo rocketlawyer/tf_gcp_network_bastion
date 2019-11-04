@@ -19,3 +19,4 @@
 !/.tfcontext/README.md
 /remotestate.tf
 !/terraform_unique.tfvars.example
+/*-disable
